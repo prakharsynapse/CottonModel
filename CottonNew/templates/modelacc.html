@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Accuracy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Smooth slide-in animation for the title */
+        @keyframes slideIn {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 1s ease-out;
+        }
+
+        /* Custom animation for the image to grow on load */
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .zoom-in {
+            animation: zoomIn 1.5s ease-out;
+        }
+
+        /* Background gradient for page */
+        body {
+            background: linear-gradient(to top right, #4B6CB7, #182848);
+        }
+
+        /* Custom box shadow effect */
+        .custom-shadow {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gradient-to-br from-indigo-500 via-blue-600 to-purple-700 min-h-screen flex justify-center items-center">
+
+    <div class="bg-white p-12 rounded-2xl custom-shadow max-w-3xl w-full transform transition duration-500 hover:scale-105">
+        <h1 class="text-4xl font-semibold text-center text-gray-800 mb-8 slide-in">Real vs Predicted Cotton Prices</h1>
+        <div class="flex justify-center items-center">
+            <img src="{{ plot_url }}" alt="Real vs Predicted Prices" class="zoom-in rounded-xl shadow-lg max-w-full h-auto"/>
+        </div>
+    </div>
+
+</body>
+</html>

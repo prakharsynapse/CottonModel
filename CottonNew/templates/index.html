@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotton Price Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Smooth animation for heading */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Animation for the button */
+        @keyframes bounce {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .bounce-button {
+            animation: bounce 1s infinite;
+        }
+
+        /* Custom background gradient */
+        body {
+            background: linear-gradient(to right, #4B6CB7, #182848);
+        }
+
+        .card-shadow {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .result-box {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .error-message {
+            background-color: #f87171;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .prediction-result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body class="font-sans text-white bg-gradient-to-br from-indigo-500 via-blue-600 to-purple-700 min-h-screen flex justify-center items-center">
+
+    <div class="w-full max-w-3xl bg-white text-gray-800 p-8 rounded-3xl card-shadow text-center">
+        <h1 class="text-5xl font-extrabold mb-8 fade-in text-indigo-600">Cotton Price Prediction</h1>
+
+        <p class="text-xl mb-6 leading-relaxed fade-in text-gray-600">Predict the future prices of cotton using machine learning. Get accurate insights on future trends based on historical data.</p>
+
+        <form id="predictionForm" method="POST" class="space-y-4">
+            <div>
+                <label for="date" class="text-lg font-semibold text-gray-700">Enter Date (YYYY-MM-DD):</label>
+                <input type="text" id="date" name="date" required class="w-full p-3 mt-2 text-lg rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <button type="submit" class="w-full p-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 focus:outline-none bounce-button">Predict Future Price</button>
+        </form>
+
+        <!-- Results section -->
+        <div id="resultBox" class="result-box">
+            <div id="errorMessage" class="error-message hidden"></div>
+            <div id="predictionResult" class="prediction-result text-indigo-700"></div>
+        </div>
+
+        <div class="mt-12">
+            <p class="text-md text-gray-700">Need to see trends or model accuracy?</p>
+            <div class="mt-4 flex justify-center space-x-6">
+                <a href="/charts" class="text-lg font-semibold text-indigo-600 hover:text-indigo-700">View Future Price Trend</a>
+                <a href="/modelacc" class="text-lg font-semibold text-indigo-600 hover:text-indigo-700">Model Accuracy</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission with AJAX
+        $(document).ready(function() {
+            $('#predictionForm').submit(function(event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+
+                let date = $('#date').val();
+
+                // Send AJAX request to the server
+                $.ajax({
+                    url: '/predict',
+                    type: 'POST',
+                    data: { date: date },
+                    success: function(response) {
+                        // Hide the error message (if any)
+                        $('#errorMessage').hide();
+
+                        // Show the result box
+                        $('#resultBox').show();
+
+                        // Display the predicted prices
+                        if (response.error) {
+                            $('#predictionResult').html('');
+                            $('#errorMessage').html(response.error).show();
+                        } else {
+                            $('#errorMessage').hide();
+                            let resultHTML = `<p><strong>Prediction Start Date:</strong> ${response["Prediction Start Date"]}</p>
+                                              <p><strong>Prediction End Date:</strong> ${response["Prediction End Date"]}</p>
+                                              <h2 class="text-xl text-indigo-600">Predicted Prices:</h2>
+                                              <ul class="list-disc pl-5">`;
+                            response["Predicted Prices"].forEach(function(price) {
+                                resultHTML += `<li class="text-lg">${price}</li>`;
+                            });
+                            resultHTML += '</ul>';
+                            $('#predictionResult').html(resultHTML);
+                        }
+                    },
+                    error: function() {
+                        $('#predictionResult').html('');
+                        $('#errorMessage').html('There was an error with the request. Please try again.').show();
+                        $('#resultBox').show();
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

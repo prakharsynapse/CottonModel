@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Price Trend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Smooth fade-in animation for the image */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Background gradient for page */
+        body {
+            background: linear-gradient(to right, #6EE7B7, #3B82F6);
+        }
+
+        /* Custom hover effect for heading */
+        .heading-hover:hover {
+            color: #D1D5DB;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 min-h-screen flex justify-center items-center text-white">
+
+    <div class="bg-white p-10 rounded-lg shadow-2xl max-w-3xl w-full transform transition duration-500 hover:scale-105">
+        <h1 class="text-4xl font-extrabold text-center mb-6 heading-hover">Future Price Trend</h1>
+        <div class="flex justify-center items-center">
+            <img src="{{ plot_url }}" alt="Future Price Trend" class="fade-in rounded-lg shadow-lg max-w-full h-auto" />
+        </div>
+    </div>
+
+</body>
+</html>
